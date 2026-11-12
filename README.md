@@ -1,67 +1,50 @@
 # modern-code-review
-lecture 11
-def is_win(game):
-    win = False
-    # rows
-    if game[0][0] == game[0][1] == game[0][2] and (game[0][0] == 'X' or game[0][0] == '0'):
-        win = True
-    if game[1][0] == game[1][1] == game[1][2] and (game[1][0] == 'X' or game[1][0] == '0'):
-        win = True
-    if game[2][0] == game[2][1] == game[2][2] and (game[2][0] == 'X' or game[2][0] == '0'):
-        win = True
-    # columns
-    if game[0][0] == game[1][0] == game[2][0] and (game[0][0] == 'X' or game[0][0] == '0'):
-        win = True
-    if game[0][1] == game[1][1] == game[2][1] and (game[0][1] == 'X' or game[0][1] == '0'):
-        win = True
-    if game[0][2] == game[1][2] == game[2][2] and (game[0][2] == 'X' or game[0][2] == '0'):
-        win = True
-    # diagonals
-    if game[0][0] == game[1][1] == game[2][2] and (game[0][0] == 'X' or game[0][0] == '0'):
-        win = True
-    if game[0][2] == game[1][1] == game[2][0] and (game[0][2] == 'X' or game[0][2] == '0'):
-        win = True
-    return win
+lecture 10
 
+This repository demonstrates the Modern Code Review (MCR) workflow using GitHub Pull Requests. An initial version of the 3×3 Tic-Tac-Toe game (game.py) was submitted via a feature branch, reviewed line-by-line by team members (and GitHub Copilot), and iteratively improved before merging into main.
 
-def main():
-    # Initialize the game board
-    game = [[' ' for _ in range(3)] for _ in range(3)]
-    player1 = 'X'
-    player2 = '0'
-    turn = True  # False for player 1's turn, True for player 2's turn. Player 1 first.
+👥 Team Members & Roles
 
-    print("X = Player 1")
-    print("0 = Player 2")
+Author (A)
+Xu Yuming
+11750870
+Repository setup, initial implementation, PR creation, and defect resolution
 
-    for n in range(9):
-        turn = not turn  # Toggle turn
+Reviewer 1 (R1)
+Xie Ting
+11750765
+Code style, unused variables, and refactoring repetitive logic (DRY principle)
 
-        if turn == False:
-            print("Player 1: ", end="")
-        else:
-            print("Player 2: ", end="")
+Reviewer 2 (R2)
+Li Yitong
+11750844
+Core game logic (0-based indexing, cell occupancy checks, and 9th-move tie handling)
 
-        print("Which cell to mark? i:[1..3], j:[1..3]: ", end="")
-        i, j = map(int, input().split())
+Reviewer 3 (R3)
+Xie Jingyi
+11729869
+Input validation (try-except, range checks) and requirement consistency ('X' / 'O')
 
-        if turn == False:
-            game[i][j] = 'X'
-        else:
-            game[i][j] = '0'
+Reviewer 4 (R4)
+Li Ying
+11729510
+Turn-switching readability and modular board display (print_board)
 
-        if is_win(game):
-            print("Win!")
-            break
+🚀 How to Run
+1. Make sure you have Python 3 installed.
 
-    if n == 8:  # All 9 cells have been filled (n goes 0 to 8)
-        print("Tie!")
+2. Clone this repository or download game.py:
+git clone https://github.com/<your-username>/<your-repo-name>.git
+cd <your-repo-name>
 
-    # Show the game to console
-    print(game[0][0] + " " + game[0][1] + " " + game[0][2])
-    print(game[1][0] + " " + game[1][1] + " " + game[1][2])
-    print(game[2][0] + " " + game[2][1] + " " + game[2][2])
+3. Run the game in your terminal:
+python game.py
 
-
-if __name__ == "__main__":
-    main()
+4. Players take turns entering row and column coordinates separated by a space (e.g., 1 2 for row 1, column 2, where values are between 1 and 3).
+🛠️ Key Improvements Made During Code Review
+• Fixed Index Out-of-Bounds Bug: Converted 1-based user coordinates [1..3] to 0-based list indices [i - 1][j - 1].
+• Prevented Cell Overwriting: Added validation to ensure players cannot place a mark on an already occupied cell.
+• Fixed 9th-Move Win/Tie Conflict: Replaced if n == 8: with a for ... else: construct so "Tie!" is only displayed when no player wins on the final move.
+• Matched Game Specification: Replaced digit '0' with capital letter 'O' for Player 2.
+• Added Robust Input Validation: Handled non-integer inputs and out-of-range coordinates gracefully without crashing.
+• Refactored Code Structure: Simplified is_win() using loops, streamlined turn switching with n % 2 == 0, and extracted board rendering into print_board().
